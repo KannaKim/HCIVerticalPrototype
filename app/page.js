@@ -1,103 +1,202 @@
+'use client'
 import Image from "next/image";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser,faBars } from '@fortawesome/free-solid-svg-icons'
+import { useState } from "react";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+function Product({ product, filters}) {
+  if (filters.brand!="Any" && filters.brand!=product.brand){
+    return null
+  }
+  if (filters.rating!=0 && filters.rating!=product.rating){
+    return null
+  }
+  if (filters.price!="Any" && filters.price!=product.price){
+    return null
+  }
+  if (filters.condition!="Any" && filters.condition!=product.condition){
+    return null
+  }
+  if (filters.category!="Any" && filters.category!=product.category){
+    return null
+  }
+  if (filters.sellerLoc!="Any" && filters.sellerLoc!=product.sellerLoc){
+    console.log("product loc: ", product.sellerLoc)
+    console.log("filters loc: ", filters.sellerLoc)
+    return null
+  }
+  return <div className="product" id={product.prodId}>
+    <div className="product-image-wrapper">
+      <Image src={product.img_path} width={200} height={200} alt="Product Image" />
     </div>
+    <span>{product.prodName}</span>
+</div>
+}
+export default function Home() {
+  const [inputVal, setInputVal] = useState("")
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [filters, setFilters] = useState({
+    brand: "Any",
+    rating: 0,
+    price: "Any",
+    condition: "Any",
+    category: "Any",
+    sellerLoc: "Any"
+  })
+
+  const products = [
+    { prodName: "Phone Case", prodId: "1", img_path: "/phonecase.png", brand: "Samsung", rating:5, price: 10, condition:"New", category:"Protection", sellerLoc:"Winnipeg"},
+    { prodName: "Power Bank", prodId: "2", img_path: "/phonecase.png", brand: "Tesla", rating:1, price: 120, condition:"Old", category:"Power", sellerLoc:"Winnipeg"},
+    { prodName: "Charger", prodId: "3", img_path: "/phonecase.png", brand: "Samsung", rating:5, price: 40, condition:"Old", category:"Charger", sellerLoc:"Reston"},
+    { prodName: "Selfie Sticks", prodId: "4", img_path: "/phonecase.png", brand: "Apple", rating:4, price: 10, condition:"New", category:"Other",sellerLoc:"Virden" },
+    { prodName: "Bluetooth Speaker", prodId: "5", img_path: "/phonecase.png", brand: "Nokia", rating:3, price: 10, condition:"New", category:"Other",sellerLoc:"Winnipeg"},
+    { prodName: "Screen Protector", prodId: "6", img_path: "/phonecase.png", brand: "Xiaomi", rating:5, price: 10, condition:"Old", category:"Protection", sellerLoc:"Winnipeg"},
+  ]
+
+  const handleFilterChange = (filterType, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: value
+    }))
+  }
+
+  const clearFilters = () => {
+    setFilters({
+      brand: "Any",
+      rating: 0,
+      price: "Any",
+      condition: "Any",
+      category: "Any",
+      sellerLoc: "Any"
+    })
+  }
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen)
+  }
+
+  return (
+  <>
+    {isSidebarOpen && <div id="sidebar-overlay" className="sidebar-overlay" onClick={toggleSidebar}></div>}
+    <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`} id="sidebar">
+      <div className="sidebar-section">
+        <label htmlFor="brand-select">Brand</label>
+        <select 
+          id="brand-select" 
+          className="sidebar-select"
+          value={filters.brand}
+          onChange={(e) => handleFilterChange('brand', e.target.value)}
+        >
+          <option value="Any">Any</option>
+          <option value="Samsung">Samsung</option>
+          <option value="Xiaomi">Xiaomi</option>
+          <option value="Tesla">Tesla</option>
+          <option value="Nokia">Nokia</option>
+          <option value="Apple">Apple</option>
+        </select>
+      </div>
+      <div className="sidebar-section">
+        <label htmlFor="rating-select">Rating</label>
+        <select 
+          id="rating-select" 
+          className="sidebar-select"
+          value={filters.rating}
+          onChange={(e) => handleFilterChange('rating', e.target.value)}
+        >
+          <option value="Any">Any</option>
+          <option value="5">5 Stars</option>
+          <option value="4">4 Stars & up</option>
+          <option value="3">3 Stars & up</option>
+        </select>
+      </div>
+      <div className="sidebar-section">
+        <label htmlFor="price-select">Price</label>
+        <select 
+          id="price-select" 
+          className="sidebar-select"
+          value={filters.price}
+          onChange={(e) => handleFilterChange('price', e.target.value)}
+        >
+          <option value="Any">Any</option>
+          <option value="1">$0 - $10</option>
+          <option value="2">$10 - $50</option>
+          <option value="3">$50 - $100</option>
+          <option value="4">$100+</option>
+        </select>
+      </div>
+      <div className="sidebar-section">
+        <label htmlFor="condition-select">Condition</label>
+        <select 
+          id="condition-select" 
+          className="sidebar-select"
+          value={filters.condition}
+          onChange={(e) => handleFilterChange('condition', e.target.value)}
+        >
+          <option value="Any">Any</option>
+          <option value="Old">Old</option>
+          <option value="New">New</option>
+        </select>
+      </div>
+      <div className="sidebar-section">
+        <label htmlFor="category-select">Category</label>
+        <select 
+          id="category-select" 
+          className="sidebar-select"
+          value={filters.category}
+          onChange={(e) => handleFilterChange('category', e.target.value)}
+        >
+          <option value="Any">Any</option>
+          <option value="Protection">Protection</option>
+          <option value="Power">Power</option>
+          <option value="Charger">Charger</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div className="sidebar-section">
+        <label htmlFor="seller-loc">Seller Location</label>
+        <select 
+          id="seller-loc" 
+          className="sidebar-select"
+          value={filters.sellerLoc}
+          onChange={(e) => handleFilterChange('sellerLoc', e.target.value)}
+        >
+          <option value="Any">Any</option>
+          <option value="Winnipeg">Winnipeg</option>
+          <option value="Virden">Virden</option>
+          <option value="Reston">Reston</option>
+        </select>
+      </div>
+      <button className="clear-filter-btn" onClick={clearFilters}>Clear Filter</button>
+    </aside>
+    <div className="controls">
+        <a href="#cart">Cart</a>
+        <a href="#orders">Orders</a>
+    </div>
+    <header className="sub-main">
+      <div className="user-profile">
+          <div className="user-img-wrapper">
+            <FontAwesomeIcon icon={faUser} size="5x" className="userImage" />
+          </div>
+          User A
+      </div>
+      <div className="search-bar">
+        <input type="text" placeholder="" onInput={(e)=>{setInputVal(e.target.value)}}/>
+      </div>
+      <div className="bar-wrapper" onClick={toggleSidebar}>
+        <FontAwesomeIcon icon={faBars} size="3x" className="filterIcon"/>
+      </div>
+    </header>
+
+    <main className="product-list">
+      {products.map((product) => (
+        product.prodName.toLocaleLowerCase().startsWith(inputVal.toLocaleLowerCase())?
+        <Product 
+          key={product.prodId} 
+          product={product}
+          filters={filters}
+        />:null
+      ))}
+    </main>
+  </>
   );
 }
