@@ -45,12 +45,12 @@ export default function Home() {
   })
 
   const products = [
-    { prodName: "Phone Case", prodId: "1", img_path: "/phonecase.png", brand: "Samsung", rating:5, price: 10, condition:"New", category:"Protection", sellerLoc:"Winnipeg"},
-    { prodName: "Power Bank", prodId: "2", img_path: "/phonecase.png", brand: "Tesla", rating:1, price: 120, condition:"Old", category:"Power", sellerLoc:"Winnipeg"},
-    { prodName: "Charger", prodId: "3", img_path: "/phonecase.png", brand: "Samsung", rating:5, price: 40, condition:"Old", category:"Charger", sellerLoc:"Reston"},
-    { prodName: "Selfie Sticks", prodId: "4", img_path: "/phonecase.png", brand: "Apple", rating:4, price: 10, condition:"New", category:"Other",sellerLoc:"Virden" },
-    { prodName: "Bluetooth Speaker", prodId: "5", img_path: "/phonecase.png", brand: "Nokia", rating:3, price: 10, condition:"New", category:"Other",sellerLoc:"Winnipeg"},
-    { prodName: "Screen Protector", prodId: "6", img_path: "/phonecase.png", brand: "Xiaomi", rating:5, price: 10, condition:"Old", category:"Protection", sellerLoc:"Winnipeg"},
+    { prodName: "Phone Case", prodId: "1", img_path: "phonecase.png", brand: "Samsung", rating:5, price: 10, condition:"New", category:"Protection", sellerLoc:"Winnipeg"},
+    { prodName: "Power Bank", prodId: "2", img_path: "powerbank.jpg", brand: "Tesla", rating:1, price: 120, condition:"Old", category:"Power", sellerLoc:"Winnipeg"},
+    { prodName: "Charger", prodId: "3", img_path: "charger.png", brand: "Samsung", rating:5, price: 40, condition:"Old", category:"Charger", sellerLoc:"Reston"},
+    { prodName: "Selfie Sticks", prodId: "4", img_path: "selfiestick.png", brand: "Apple", rating:4, price: 10, condition:"New", category:"Other",sellerLoc:"Virden" },
+    { prodName: "Bluetooth Speaker", prodId: "5", img_path: "bspeaker.png", brand: "Nokia", rating:3, price: 10, condition:"New", category:"Other",sellerLoc:"Winnipeg"},
+    { prodName: "Screen Protector", prodId: "6", img_path: "screenprotector.png", brand: "Xiaomi", rating:5, price: 10, condition:"Old", category:"Protection", sellerLoc:"Winnipeg"},
   ]
 
   const handleFilterChange = (filterType, value) => {
@@ -169,7 +169,7 @@ export default function Home() {
       <button className="clear-filter-btn" onClick={clearFilters}>Clear Filter</button>
     </aside>
     <div className="controls">
-        <a href="#cart">Cart</a>
+        <a href="#cart">Carts</a>
         <a href="#orders">Orders</a>
     </div>
     <header className="sub-main">
@@ -182,8 +182,8 @@ export default function Home() {
       <div className="search-bar">
         <input type="text" placeholder="" onInput={(e)=>{setInputVal(e.target.value)}}/>
       </div>
-      <div className="bar-wrapper" onClick={toggleSidebar}>
-        <FontAwesomeIcon icon={faBars} size="3x" className="filterIcon"/>
+      <div className="bar-wrapper">
+        <FontAwesomeIcon icon={faBars} size="3x" className="filterIcon" onClick={toggleSidebar}/>
       </div>
     </header>
 
